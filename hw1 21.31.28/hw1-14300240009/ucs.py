@@ -5,14 +5,37 @@ import numpy as np
 
 
 # get the columns and index names for a new pandas DataFrame
-def get_points (filename):
+# def get_points (filename):
+#     d = {}   # d denotes the distance form start to the point, but currently it just presents the points
+#     f = file(filename)
+#     while True:
+#         s = f.readline()
+#         if s == '':
+#             break
+#         s = s.strip().split(' ')
+#         d[s[0]] = d[s[1]] = 0
+#     return d 
+
+# def get_points ():
+#     d = {}   # d denotes the distance form start to the point, but currently it just presents the points
+#     s = raw_input()
+#     l = s.split('\n')[1:]
+#     for s in l:
+#         if 'END' in s:
+#             break
+#         s = s.strip().split(' ')
+#         d[s[0]] = d[s[1]] = 0
+#     return d 
+
+def get_points ():
     d = {}   # d denotes the distance form start to the point, but currently it just presents the points
-    f = file(filename)
+    s = raw_input()
     while True:
-        s = f.readline()
-        if s == '':
+        print "s is",s
+        s = raw_input()
+        if 'END' in s:
             break
-        s = s[:-1].split(' ')
+        s = s.strip().split(' ')
         d[s[0]] = d[s[1]] = 0
     return d   
 
@@ -24,7 +47,7 @@ def set_df (filename, d):
         s = f.readline()
         if s == '':
             break
-        s = s[:-1].split(' ')
+        s = s.strip().split(' ')
         df.loc[s[0],s[1]]=int(s[2])
         
     # adding prior vector to df : the prior point of each checked points
@@ -78,7 +101,7 @@ def get_path (df):
         if s == 'Start':
             break
     result = result[::-1]
-    r = '→'.join(result)    # final result
+    r = '->'.join(result)    # final result
     print ''
     print 'Result:', r
     print 'Total lenth:', d.get('Goal')
@@ -94,7 +117,7 @@ def write_txt(filename,r):
 
 
 
-d = get_points('input.txt')
+d = get_points()
 df = set_df('input.txt',d)
 df_result = ucs_search(df,d)
 r = get_path(df_result)
