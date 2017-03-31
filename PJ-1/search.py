@@ -85,8 +85,74 @@ def depthFirstSearch(problem):
     print "Start:", problem.getStartState()
     print "Is the start a goal?", problem.isGoalState(problem.getStartState())
     print "Start's successors:", problem.getSuccessors(problem.getStartState())
-    """
+   
+    Start: (5, 5)
+    Is the start a goal? False
+    Start's successors: [((5, 4), 'South', 1), ((4, 5), 'West', 1)]
     "*** YOUR CODE HERE ***"
+    """
+    from game import Actions
+
+    print "Start:", problem.getStartState()
+    print "Is the start a goal?", problem.isGoalState(problem.getStartState())
+    result = []
+    explored = []
+    stack = util.Stack()
+    s = problem.getStartState()
+    stack.push((s,'Stop',1))
+    while True:
+        print "current result",result
+        print "current explored",explored
+        while True:
+            s = stack.pop()
+            if s not in explored and s[0] not in explored:
+                break
+        explored.append(s[0])
+        result.append(s[1]) # s means state ((5,5),'North',1)
+        print "=="
+        print "appended state",s[1]
+        print "explored state",s[0]
+        if problem.isGoalState(s):
+            return result
+        successors = problem.getSuccessors(s[0])
+#        if len(successors) == 1:
+#            state = successors[0][0]
+#            if problem.isGoalState(state):
+#                return result
+#        else:
+        flag = 0
+        for successor in successors:
+            if successor[0] not in explored:
+                stack.push(successor)
+                if flag == 0:
+                    flag = 1 
+            if problem.isGoalState(successor[0]):
+                result.append(successor[1])
+                return result
+        if flag == 0:
+            temp = s[0]
+            for direction in result[::-1]:
+                direction = Actions.reverseDirection(direction)
+                result.append(direction)
+                delta = Actions.directionToVector(direction,1.0)
+                x = temp[0] + delta[0]
+                y = temp[1] + delta[1]
+                temp = (x,y)
+                temp_suc = problem.getSuccessors(temp)
+                temp_flag = 0
+                for successor in temp_suc:
+                    if successor[0] not in explored:
+                        temp_flag = 1
+                        break
+                if temp_flag == 1:
+                    break
+            stack.push((temp,direction,1))
+            if problem.isGoalState(successor[0]):
+                result.append(successor[1])
+                return result
+               
+#    return ['South','South','West','South','West','West','South','West']                    
+#           ['South', 'West', 'West', 'West', 'South', 'South', 'East', 'South', 'South', 'East', 'North', 'East', 'North']
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
