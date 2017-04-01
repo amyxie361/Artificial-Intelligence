@@ -105,7 +105,7 @@ def depthFirstSearch(problem):
         print "current explored",explored
         while True:
             s = stack.pop()
-            if s not in explored and s[0] not in explored:
+            if s[0] not in explored:
                 break
         explored.append(s[0])
         result.append(s[1]) # s means state ((5,5),'North',1)
@@ -115,11 +115,6 @@ def depthFirstSearch(problem):
         if problem.isGoalState(s):
             return result
         successors = problem.getSuccessors(s[0])
-#        if len(successors) == 1:
-#            state = successors[0][0]
-#            if problem.isGoalState(state):
-#                return result
-#        else:
         flag = 0
         for successor in successors:
             if successor[0] not in explored:
@@ -151,8 +146,6 @@ def depthFirstSearch(problem):
                 result.append(successor[1])
                 return result
                
-#    return ['South','South','West','South','West','West','South','West']                    
-#           ['South', 'West', 'West', 'West', 'South', 'South', 'East', 'South', 'South', 'East', 'North', 'East', 'North']
     util.raiseNotDefined()
 
 def breadthFirstSearch(problem):
